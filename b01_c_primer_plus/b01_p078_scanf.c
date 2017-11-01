@@ -28,6 +28,35 @@
     输入double  -->  %lf
  */
 
+/*
+    scanf转换说明：
+
+    %c              --> 一个字符
+    %d              --> 有符号的十进制数
+    %e,%f,%g,%a     --> 浮点数  (%a是C99标准)
+    %E,%F,%G,%A     --> 浮点数  (%A是C99标准)
+    %i              --> 有符号十进制整数
+    %o              --> 有符号八进制整数
+    %p              --> 指针(一个地址)
+    %s              --> 字符串，空白字符分隔
+    %u              --> 无符号十进制整数
+    %x,%X           --> 有符号十六进制整数
+ */
+
+/*
+    %*              --> 滞后赋值(%*d)
+    digit(s)        --> 最大字段宽度
+                        达到最大字段宽度或遇到空白字符
+    hh              --> 把整数读作signed char或unsigned char
+                        示例: %lld   %llu
+    h,l,L           --> %hd %hi 存储在 short int中
+                        %hx %hu %ho  存储在 unsigned short int中
+                        %ld %li  存储在 long 中
+                        %lo %lx %lu 存储在unsigned long中
+                        %le %lf %lg 存储在double中
+                        %Le %Lf %Lg 存储在long double中
+ */
+
 #include <stdio.h>
 
 void b01_p078() {

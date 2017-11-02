@@ -102,4 +102,37 @@ void b01_p078() {
         d is 34000000000000001601795228719991244580453667252880619983886876672.000000
      */
 
+//    unsigned width, precision;
+//    int number = 256;
+//    double weight = 242.5;
+//
+//    printf("field width is:\n");
+//    scanf("%d", &width);
+//    printf("the number is: %*d\n", width, number);
+//    printf("a new width and a new precision:\n");
+//    scanf("%d %d", &width, &precision);
+//    printf("weight is %*.*f\n", width, precision, weight);
+
+    /*
+        field width is:
+        7
+        the number is:     256
+        a new width and a new precision:
+        5   9
+        weight is 242.500000000
+     */
+
+//    int n;
+//    printf("input three integers:\n");
+//    scanf("%*d %*d %d", &n);
+//    printf("the last integer is %d\n", n);
+    /*
+        读取文件特定列的时候，非常有用
+        input three integers:
+        1 2 3
+        1 2 3
+        the last integer is 3
+        Hello, World!
+     */
+
 }

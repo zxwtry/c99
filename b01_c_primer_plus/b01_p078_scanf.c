@@ -57,6 +57,12 @@
                         %Le %Lf %Lg 存储在long double中
  */
 
+/*
+    通过指定足够大的固定字段宽度，让输出更加整齐
+    printf("%9d %9d %9d\n", v1, v2, v3);
+    printf("%.2f %10.2f", float_val, float_val);
+ */
+
 #include <stdio.h>
 
 void b01_p078() {
@@ -134,5 +140,7 @@ void b01_p078() {
         the last integer is 3
         Hello, World!
      */
+
+
 
 }

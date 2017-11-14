@@ -3,5 +3,5 @@ project(c99)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCE_FILES main.c b01_c_primer_plus/b01_p025_two_func.c b01_c_primer_plus/b01_p029_c_keyword.c b01_c_primer_plus/b01_p034_datastruct_keyword.c b01_c_primer_plus/b01_p038_radix.c b01_c_primer_plus/b01_p042_char.c b01_c_primer_plus/b01_p047_altnames.c b01_c_primer_plus/b01_p048_float.c b01_c_primer_plus/b01_p051_basic_datastruct.c b01_c_primer_plus/b01_p054_printf.c b01_c_primer_plus/b01_p060_callback.c b01_c_primer_plus/b01_p063_string_strlen_sizeof.c b01_c_primer_plus/b01_p064_define_const.c b01_c_primer_plus/b01_p074_int_conv.c b01_c_primer_plus/b01_p078_scanf.c)
+set(SOURCE_FILES main.c b01_c_primer_plus/b01_p025_two_func.c b01_c_primer_plus/b01_p029_c_keyword.c b01_c_primer_plus/b01_p034_datastruct_keyword.c b01_c_primer_plus/b01_p038_radix.c b01_c_primer_plus/b01_p042_char.c b01_c_primer_plus/b01_p047_altnames.c b01_c_primer_plus/b01_p048_float.c b01_c_primer_plus/b01_p051_basic_datastruct.c b01_c_primer_plus/b01_p054_printf.c b01_c_primer_plus/b01_p060_callback.c b01_c_primer_plus/b01_p063_string_strlen_sizeof.c b01_c_primer_plus/b01_p064_define_const.c b01_c_primer_plus/b01_p074_int_conv.c b01_c_primer_plus/b01_p078_scanf.c b01_c_primer_plus/b01_p095_sizeof_size_t.c)
 add_executable(c99 ${SOURCE_FILES})

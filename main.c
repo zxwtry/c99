@@ -1,7 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main() {
-    L001();
-    printf("Hello, World!\n");
+    b01_p100();
     return 0;
 }

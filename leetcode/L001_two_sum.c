@@ -27,14 +27,6 @@ int* L001_01_twoSum(int* ns, int nn, int t) {
     return ret;
 }
 
-int* L001_02_twoSum(int* ns, int nn, int t) {
-    int* ret = (int *) malloc(2 * sizeof(int));
-
-    return ret;
-}
-
-
-
 void L001() {
     int nn = 9;
     int ns[] = {2, 7, 11, 15};

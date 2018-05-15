@@ -31,7 +31,7 @@ struct ListNode {
     struct ListNode *next;
 };
 
-int getLengthOfNode(struct ListNode * l) {
+int L002_getLengthOfNode(struct ListNode * l) {
     int len = 0;
     while (l != NULL) {
         len ++;
@@ -40,7 +40,7 @@ int getLengthOfNode(struct ListNode * l) {
     return len;
 }
 
-struct ListNode * constrct(int* arr, int len) {
+struct ListNode * L002_constrct(int* arr, int len) {
     struct ListNode * head = NULL;
     struct ListNode * t = NULL;
     struct ListNode * p = NULL;
@@ -60,7 +60,7 @@ struct ListNode * constrct(int* arr, int len) {
 }
 
 
-void printList(struct ListNode * l) {
+void L002_printList(struct ListNode * l) {
     int index = 0;
     while (l != NULL) {
         printf("index:%d  value:%d\n", index ++, l->val);
@@ -68,7 +68,7 @@ void printList(struct ListNode * l) {
     }
 }
 
-void freeList(struct ListNode * l) {
+void L002_freeList(struct ListNode * l) {
     struct ListNode * t = NULL;
     while (l != NULL) {
         t = l->next;
@@ -77,15 +77,15 @@ void freeList(struct ListNode * l) {
     }
 }
 
-struct ListNode* addTwoNode(struct ListNode * n1, struct ListNode * n2) {
+struct ListNode* L002_addTwoNode(struct ListNode * n1, struct ListNode * n2) {
     return NULL;
 }
 
 struct ListNode* L002_addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
-    int n1 = getLengthOfNode(l1);
-    int n2 = getLengthOfNode(l2);
+    int n1 = L002_getLengthOfNode(l1);
+    int n2 = L002_getLengthOfNode(l2);
     if (n1 < n2) {
-        return addTwoNumbers(l2, l1);
+        return L002_addTwoNumbers(l2, l1);
     }
     struct ListNode * t1 = l1;
     struct ListNode * t2 = l2;
@@ -122,13 +122,13 @@ void L002() {
     int a2[] = {5};
     int n1 = 1;
     int n2 = 1;
-    struct ListNode * l1 = constrct(a1, n1);
-    struct ListNode * l2 = constrct(a2, n2);
+    struct ListNode * l1 = L002_constrct(a1, n1);
+    struct ListNode * l2 = L002_constrct(a2, n2);
     struct ListNode * ans = L002_addTwoNumbers(l1, l2);
 
-    printList(l1);
-    printList(l2);
-    printList(ans);
+    L002_printList(l1);
+    L002_printList(l2);
+    L002_printList(ans);
 
 
 

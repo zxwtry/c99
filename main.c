@@ -2,6 +2,6 @@
 #include <stdlib.h>
 
 int main() {
-    b01_p100();
+    L005();
     return 0;
 }

@@ -2,6 +2,6 @@
 #include <stdlib.h>
 
 int main() {
-    L005();
+    L009();
     return 0;
 }

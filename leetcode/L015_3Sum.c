@@ -113,7 +113,8 @@ int compare_ints(const void *a, const void *b) {
 }
 
 
-// 这个是 Leetcode Discuss中的解法
+// 也很好理解，去重一定要小心
+// AC 60ms 97.79 %
 int** L015_02_threeSum(int* nums, int numsSize, int* returnSize) {
     int ** ans = NULL;
     if (numsSize < 3) {
@@ -122,30 +123,38 @@ int** L015_02_threeSum(int* nums, int numsSize, int* returnSize) {
     int amount = 0;
     int ansCap = 20;
     *returnSize = 0;
-    ans = (int**) malloc(ansCap * sizeof(int*));
+    ans = (int**) malloc(ansCap * sizeof(int*)) ;
     int target, sum, right, left, p, i;
     qsort(nums, numsSize, sizeof(int), compare_ints);
     // 重复处理方法：
-    //
     for (p = 0; p < numsSize - 1; ++p) {
+        if (p != 0 && nums[p - 1] == nums[p]) {
+            continue;
+        }
         target = - nums[p];
         left = 1 + p;
         right = numsSize - 1;
         i = p;
         while(left < right) {
             sum = nums[left] + nums[right];
-            if (sum < target) {
+            if (left != p + 1 && nums[left - 1] == nums[left]) {
                 left ++;
-            } else if (sum > target) {
-                right --;
             } else {
-                // 这里找到了一个
-                // int *** ans, int * ansCap, int * ansSize, int v1, int v2, int v3
-                L015_add(&ans, &ansCap, returnSize, nums[i], nums[left], nums[right]);
-
+                if (sum < target) {
+                    left ++;
+                } else if (sum > target) {
+                    right --;
+                } else {
+                    // 这里找到了一个
+                    // int *** ans, int * ansCap, int * ansSize, int v1, int v2, int v3
+                    L015_add(&ans, &ansCap, returnSize, nums[i], nums[left], nums[right]);
+                    left ++;
+                    right --;
+                }
             }
         }
     }
+    return ans;
 }
 
 void L015() {

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <zconf.h>
 #include <math.h>
+#include <stdlib.h>
 
 int compare_int(const void * a, const void * b) {
     int a_v = *(int *) a;
@@ -50,14 +51,91 @@ int compare_select(int a, int b, int t) {
     return t - a < b - t ? -1 : 1;
 }
 
-int threeSumClosest(int* nums, int numsSize, int target) {
-    int ans = 0;
-    if (numsSize < 3) {
-        return 0;
+void L016_solve_ans_compare(int * ans, int new_ans, int target) {
+    if (compare_select(*ans, new_ans, target) > 0) {
+        * ans = new_ans;
     }
 }
 
+int L016_binary_find_near(int * nums, int startIndex, int endIndex, int target) {
+    int midIndex = 0;
+    int midValue = 0;
+    while (startIndex + 1 < endIndex) {
+        midIndex = startIndex + (endIndex - startIndex) / 2;
+        midValue = nums[midIndex];
+        if (midValue > target) {
+            endIndex = midIndex;
+        } else if (midValue < target) {
+            startIndex = midIndex;
+        } else {
+            return midIndex;
+        }
+    }
+    if (compare_select(nums[startIndex], nums[endIndex], target) < 0) {
+        return startIndex;
+    } else {
+        return endIndex;
+    }
+}
+
+// AC 16ms 33.06 %
+int L016_threeSumClosest(int* nums, int numsSize, int target) {
+    int ans = 0;
+    int i = 0, j = 0, k = 0, a = 0;
+    long long sum = 0;
+    if (numsSize < 3) {
+        return 0;
+    }
+    qsort(nums, numsSize, sizeof(int), compare_int);
+    ans = nums[0] + nums[1] + nums[2];
+    for (i = 0; i < numsSize - 2; ++i) {
+        if (i != 0 && nums[i - 1] == nums[i]) {
+            continue;
+        }
+        for (j = i + 1; j < numsSize - 1; ++j) {
+            if (j != i + 1 && nums[j - 1] == nums[j]) {
+                continue;
+            }
+            sum = target;
+            sum -=  nums[i];
+            sum -=  nums[j];
+            k = L016_binary_find_near(nums, j + 1, numsSize - 1, sum);
+            L016_solve_ans_compare(&ans, nums[i] + nums[j] + nums[k], target);
+        }
+    }
+    return ans;
+}
+
+// 查找 N ^ 2 一样可以实现
+int L016_02_threeSumClosest(int* nums, int numsSize, int target) {
+    int i, j, k, a, s;
+    if (numsSize < 3) {
+        return 0;
+    }
+    qsort(nums, numsSize, sizeof(int), compare_int);
+    a = nums[0] + nums[1] + nums[2];
+    for (i = 0; i < numsSize - 2; ++i) {
+        j = i + 1;
+        k = numsSize - 1;
+        while (j < k) {
+            s = nums[i] + nums[j] + nums[k];
+            if (s < target) {
+                j ++;
+            } else if (s > target) {
+                k --;
+            } else {
+                return s;
+            }
+            L016_solve_ans_compare(&a, s, target);
+        }
+    }
+    return a;
+}
+
+
 void L016() {
-    printf("%d\n", INT_MAX - INT_MIN);
-    printf("%d", INT_MIN - INT_MAX);
+    int nums[] = {1,1,-1,-1,3};
+    int numsSize = 5;
+    int target = 1;
+    printf("ans is %d\n", L016_02_threeSumClosest(nums, numsSize, target));
 }

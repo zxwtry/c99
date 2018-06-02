@@ -78,7 +78,7 @@ int L023_02_compare(struct ListNode * l1, struct ListNode * l2) {
     if (l1 == l2) {
         return 0;
     } else if (l1 == NULL || l2 == NULL) {
-        return l1 == NULL ? -1 : 1;
+        return l1 == NULL ? 1 : -1;
     }
     return l1->val < l2->val ? -1 : 1;
 }
@@ -90,35 +90,67 @@ void L023_02_swap(struct ListNode ** lists, int i, int j) {
     lists[j] = tmp;
 }
 
-void L023_02_heapDown(struct ListNode ** lists, int index, int listsSize) {
-    int left = 2 * index + 1;
-    int right = left + 1;
-    int selIndex = index;
-    if (left < listsSize && L023_02_compare(lists[selIndex], lists[left]) > 0) {
-        selIndex = left;
+
+void L023_02_buildHeap(struct ListNode ** lists, int listsSize) {
+    int index = 0;
+    for (index = (listsSize - 2) / 2; index > -1; --index) {
+        L023_02_heapDown(lists, index, listsSize);
     }
-    if (right < listsSize)
-
-
-
 }
 
 
-struct ListNode* L023_02_mergeKLists(struct ListNode** lists, int listsSize) {
+void L023_02_heapDown(struct ListNode ** lists, int index, int listsSize) {
+    int left, right, selIndex;
+    while (1) {
+        left = 2 * index + 1;
+        right = left + 1;
+        selIndex = index;
+        if (left < listsSize && L023_02_compare(lists[selIndex], lists[left]) > 0) {
+            selIndex = left;
+        }
+        if (right < listsSize && L023_02_compare(lists[selIndex], lists[right]) > 0) {
+            selIndex = right;
+        }
+        if (selIndex == index) {
+            break;
+        }
+        L023_02_swap(lists, selIndex, index);
+        index = selIndex;
+    }
+}
 
+// AC 8ms 100.00 %
+struct ListNode* L023_02_mergeKLists(struct ListNode** lists, int listsSize) {
+    struct ListNode * ans = NULL;
+    struct ListNode * cur = NULL;
+    if (listsSize < 1) return ans;
+    L023_02_buildHeap(lists, listsSize);
+    ans = lists[0];
+    lists[0] = lists[0] == NULL ? NULL : lists[0]->next;
+    cur = ans;
+    while (1) {
+        L023_02_heapDown(lists, 0, listsSize);
+        if (lists[0] == NULL) {
+            break;
+        }
+        cur->next = lists[0];
+        lists[0] = lists[0]->next;
+        cur = cur->next;
+    }
+    return ans;
 }
 
 
 void L023() {
     struct ListNode ** input = (struct ListNode **) malloc(sizeof(struct ListNode *) * 3);
-    int arr1[] = {1, 4, 7, 10};
-    int arr2[] = {2, 5, 9, 11};
-    int arr3[] = {3, 8, 10, 18};
+    int arr1[] = {1};
+    int arr2[] = {};
+    int arr3[] = {-1};
     struct ListNode * ans = NULL;
-    input[0] = L023_constrct_from_array(arr1, 4);
-    input[1] = L023_constrct_from_array(arr2, 4);
-    input[2] = L023_constrct_from_array(arr3, 4);
+    input[0] = L023_constrct_from_array(arr1, 1);
+    input[1] = L023_constrct_from_array(arr2, 0);
+    input[2] = L023_constrct_from_array(arr3, 1);
     //L023_print(input[2]);
-    ans = L023_mergeKLists(input, 3);
+    ans = L023_02_mergeKLists(input, 3);
     L023_print(ans);
 }

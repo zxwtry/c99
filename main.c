@@ -2,6 +2,6 @@
 #include <stdlib.h>
 
 int main() {
-    L015();
+    p002();
     return 0;
 }

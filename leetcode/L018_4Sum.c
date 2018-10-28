@@ -1,106 +1,124 @@
-//
-// Created by zxwtry on 2018/5/28.
-//
+/*
+    url: leetcode.com/problems/4sum/
+    36ms 45.28%
+*/
 
-
-
-
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-
-void L018_add(int *** ans, int * cap, int * size, int a, int b, int c, int d) {
-    int ** tmp = NULL;
-    int i = 0;
-    int * add = (int *) malloc(sizeof(int) * 4);
-    add[0] = a;
-    add[1] = b;
-    add[2] = c;
-    add[3] = d;
-    if (*cap == *size) {
-        *cap = (*cap) * 2 + 1;
-        tmp = (int **) malloc(sizeof(int *) * (*cap));
-        for (i = 0; i < *size; ++i) {
-            tmp[i] = (*ans)[i];
-        }
-        free(*ans);
-        *ans = tmp;
+//[l, r]
+int L018_partition(int* a, int l, int r) {
+    int t = *(a + l);
+    while (l < r) {
+        while (l < r && *(a + r) >= t) r --;
+        *(a + l) = *(a + r);
+        while (l < r && *(a + l) <= t) l ++;
+        *(a + r) = *(a + l);
     }
-    (*ans)[(*size) ++] = add;
+    *(a + l) = t;
+    return l;
 }
 
-int L018_compare_int(void * a, void * b) {
-    int av = *((int *)a);
-    int bv = *((int *)b);
-    if (av ==  bv) return 0;
-    return av < bv ? -1 : 1;
+//[l, r)
+void L018_quick_sort(int* a, int l, int r) {
+    int p = 0;
+    if (l < r) {
+        p = L018_partition(a, l, r - 1);
+        L018_quick_sort(a, l, p);
+        L018_quick_sort(a, p + 1, r);
+    }
 }
 
+struct L018_list {
+    int a[4];
+    struct L018_list *next;
+};
 
-/**
- * Return an array of arrays of size *returnSize.
- * Note: The returned array must be malloced, assume caller calls free().
- */
-// AC 24ms 51.47 %
-// 添加二循环内判断之后
-// AC 8ms 100 %
-int** L018_fourSum(int* nums, int numsSize, int target, int* returnSize) {
-    int i, j, s, t;
-    int cap = 1000;
-    int ** ans = (int **) malloc(sizeof(int *) * cap);
-    int diff = 0;
-    *returnSize = 0;
-    qsort(nums, numsSize, sizeof(int), L018_compare_int);
-    for (i = 0; i < numsSize - 3; ++i) {
-        if (i != 0 && nums[i - 1] == nums[i]) {
+void free_list(struct L018_list * head) {
+    struct L018_list * next = head;
+    while (next != NULL) {
+        head = next->next;
+        free(next);
+        next = head;
+    }
+}
+
+int** fourSum(int* nums, int numsSize, int target, int* returnSize) {
+    int ** answer = NULL;
+    struct L018_list * head = NULL, * next = NULL, * temp = NULL;
+    int i = 0, j = 0, l = 0, r = 0, sum = 0, count = 0;
+    int * answer_temp = NULL;
+    L018_quick_sort(nums, 0, numsSize);
+    for (i = 0; i < numsSize; i ++) {
+        if (i != 0 && *(nums + i - 1) == *(nums + i))
             continue;
-        }
-        for (j = i + 1; j < numsSize - 2; ++j) {
-            if (j != i + 1 && nums[j - 1] == nums[j]) {
+        for (j = i + 1; j < numsSize; j ++) {
+            if (j != i + 1 && *(nums + j - 1) == *(nums + j))
                 continue;
-            }
-            s = j + 1;
-            t = numsSize - 1;
-            if (nums[i] + nums[j] + nums[s] + nums[s + 1] > target) {
-                continue;
-            }
-            if (nums[i] + nums[j] + nums[t - 1] + nums[t] < target) {
-                continue;
-            }
-            while (s < t) {
-                if (s != j + 1 && nums[s - 1] == nums[s]) {
-                    s ++;
-                } else {
-                    diff = nums[i] + nums[j] + nums[s] + nums[t] - target;
-                    if (diff == 0) {
-                        L018_add(&ans, &cap, returnSize, nums[i], nums[j], nums[s], nums[t]);
-                        s ++;
-                        t --;
-                    } else if (diff < 0) {
-                        s ++;
+            l = j + 1;
+            r = numsSize - 1;
+            while (l < r) {
+                sum = *(nums + i) + *(nums + j) + *(nums + l) + *(nums + r);
+                if (sum == target) {
+                    temp = (struct L018_list *) malloc(sizeof(struct L018_list));
+                    temp->next = NULL;
+                    temp->a[0] = *(nums + i);
+                    temp->a[1] = *(nums + j);
+                    temp->a[2] = *(nums + l);
+                    temp->a[3] = *(nums + r);
+                    if (NULL == head) {
+                        head = temp;
+                        next = temp;
                     } else {
-                        t --;
+                        next->next = temp;
+                        next = temp;
                     }
+                    count ++;
+                    do {
+                        l ++;
+                    } while (l < r && nums[l - 1] == nums[l]);
+                    do {
+                        r --;
+                    } while (l < r && nums[r + 1] == nums[r]);
+                } else if (sum > target) {
+                    do {
+                        r --;
+                    } while (l < r && nums[r + 1] == nums[r]);
+                } else {
+                    do {
+                        l ++;
+                    } while (l < r && nums[l - 1] == nums[l]);
                 }
             }
         }
     }
-    return ans;
+    answer = (int **) malloc(sizeof(int *) * count);
+    next = head;
+    for (i = 0; i < count; i ++) {
+        answer_temp = (int *) malloc(sizeof(int) * 4);
+        answer_temp[0] = next->a[0];
+        answer_temp[1] = next->a[1];
+        answer_temp[2] = next->a[2];
+        answer_temp[3] = next->a[3];
+        *(answer + i) = answer_temp;
+        next = next->next;
+    }
+    free_list(head);
+    *(returnSize) = count;
+    return answer;
 }
 
-void L018() {
-    int nums[] = {1, 0, -1, 0, -2, 2, -2, -2, -2, -2, -2};
-    int numsSize = 11;
-    int target = 0;
-    int returnSize = 0;
+int L018() {
+    int nums[] = {-1,0,1,2,-1,-4};
+    //int nums[] = {1, 1, 1, 1, 1, 1};
+    int numsSize = 6;
+    int target = -1;
+    int returnSize[] = {0};
+    int ** a = fourSum(nums, numsSize, target, returnSize);
     int i = 0;
-    int j = 0;
-    int ** ans = L018_fourSum(nums, numsSize, target, &returnSize);
-    printf("size is %d\n", returnSize);
-    for (i = 0; i < returnSize; ++i) {
-        for (j = 0; j < 4; ++j) {
-            printf("%d ", ans[i][j]);
-        }
-        printf("\n");
-    }
+    printf("answer length is %d\r\n", *(returnSize));
+    for (i = 0; i < *(returnSize); i ++)
+        free(*(a + i));
+    free(a);
+    return 0;
 }
